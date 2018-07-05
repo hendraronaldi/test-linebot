@@ -70,16 +70,16 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							if strings.Contains(flexBodyComponent, "Horizontal{") {
 								var lineFlexBodyHorizontal *linebot.BoxComponent
 								var lineFlexBodyHorizontalComponent []linebot.FlexComponent
-								flexBodyHorizontal := strings.Split(strings.Replace(strings.TrimSuffix(flexBodyComponent, ""), "Horizontal{", "", -1), "~")
+								flexBodyHorizontal := strings.Split(strings.Replace(strings.TrimSuffix(flexBodyComponent, "}"), "Horizontal{", "", -1), "~")
 								for _, flexBodyHorizontalComponent := range flexBodyHorizontal {
 									if strings.Contains(flexBodyHorizontalComponent, "FlexAction{") {
 										flexActionLabel := strings.Replace(strings.TrimSuffix(flexBodyHorizontalComponent, "}"), "FlexAction{", "", -1)
 										var flexAction string
 										if strings.Contains(flexAction, ":") {
 											flexActionElements := strings.Split(flexActionLabel, ":")
-											flexAction = flexActionElements[len(flexActionElements)-1]
+											flexAction += flexActionElements[len(flexActionElements)-1]
 										} else {
-											flexAction = flexActionLabel
+											flexAction += flexActionLabel
 										}
 										lineFlexAction := linebot.NewMessageTemplateAction(flexActionLabel, flexAction)
 										lineFlexBodyButton := &linebot.ButtonComponent{
@@ -111,9 +111,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 										var flexAction string
 										if strings.Contains(flexAction, ":") {
 											flexActionElements := strings.Split(flexActionLabel, ":")
-											flexAction = flexActionElements[len(flexActionElements)-1]
+											flexAction += flexActionElements[len(flexActionElements)-1]
 										} else {
-											flexAction = flexActionLabel
+											flexAction += flexActionLabel
 										}
 										lineFlexAction := linebot.NewMessageTemplateAction(flexActionLabel, flexAction)
 										lineFlexBodyButton := &linebot.ButtonComponent{
