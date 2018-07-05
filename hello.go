@@ -75,7 +75,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 									if strings.Contains(flexBodyHorizontalComponent, "FlexAction{") {
 										flexAction := strings.Replace(strings.TrimSuffix(flexBodyHorizontalComponent, "}"), "FlexAction{", "", -1)
 										var flexActionLabel string
-										if strings.Contains(flexActionLabel, ":") {
+										if strings.Contains(flexAction, ":") {
 											flexActionElements := strings.Split(flexAction, ":")
 											flexActionLabel += flexActionElements[len(flexActionElements)-1]
 										} else {
@@ -109,7 +109,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 									if strings.Contains(flexBodyVerticalComponent, "FlexAction{") {
 										flexAction := strings.Replace(strings.TrimSuffix(flexBodyVerticalComponent, "}"), "FlexAction{", "", -1)
 										var flexActionLabel string
-										if strings.Contains(flexActionLabel, ":") {
+										if strings.Contains(flexAction, ":") {
 											flexActionElements := strings.Split(flexAction, ":")
 											flexActionLabel += flexActionElements[len(flexActionElements)-1]
 										} else {
