@@ -58,10 +58,14 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							Text:   formTitle,
 							Size:   linebot.FlexTextSizeTypeXl,
 							Align:  linebot.FlexComponentAlignTypeCenter,
-							Margin: linebot.FlexComponentMarginTypeMd,
+							Margin: linebot.FlexComponentMarginTypeSm,
 							Weight: linebot.FlexTextWeightTypeBold,
 						}
 						headerComponent = append(headerComponent, header)
+						separator := &linebot.SeparatorComponent{
+							Type: linebot.FlexComponentTypeSeparator,
+						}
+						headerComponent = append(headerComponent, separator)
 						flexFormHeader = &linebot.BoxComponent{
 							Type:     linebot.FlexComponentTypeBox,
 							Layout:   linebot.FlexBoxLayoutTypeVertical,
@@ -80,15 +84,22 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 									Text:   text,
 									Weight: linebot.FlexTextWeightTypeBold,
 									Wrap:   true,
+									Size:   linebot.FlexTextSizeTypeXs,
 								}
+								bodyContentComponent = append(bodyContentComponent, bodyLabelValue)
+								separator := &linebot.SeparatorComponent{
+									Type: linebot.FlexComponentTypeSeparator,
+								}
+								bodyContentComponent = append(bodyContentComponent, separator)
 							} else {
 								bodyLabelValue = &linebot.TextComponent{
 									Type: linebot.FlexComponentTypeText,
 									Text: text,
 									Wrap: true,
+									Size: linebot.FlexTextSizeTypeXs,
 								}
+								bodyContentComponent = append(bodyContentComponent, bodyLabelValue)
 							}
-							bodyContentComponent = append(bodyContentComponent, bodyLabelValue)
 						}
 						bodyContent = &linebot.BoxComponent{
 							Type:     linebot.FlexComponentTypeBox,
@@ -96,12 +107,17 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							Contents: bodyContentComponent,
 						}
 						bodyComponent = append(bodyComponent, bodyContent)
+						separator := &linebot.SeparatorComponent{
+							Type: linebot.FlexComponentTypeSeparator,
+						}
+						bodyComponent = append(bodyComponent, separator)
 					}
 				}
 				flexFormBody = &linebot.BoxComponent{
 					Type:     linebot.FlexComponentTypeBox,
 					Layout:   linebot.FlexBoxLayoutTypeVertical,
 					Contents: bodyComponent,
+					Spacing:  linebot.FlexComponentSpacingTypeSm,
 				}
 
 				//Carousel
