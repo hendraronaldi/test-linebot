@@ -142,7 +142,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							Layout:   linebot.FlexBoxLayoutTypeVertical,
 							Contents: flexBodyContent,
 						}
-						flexBubbleContainer.Body = lineFlexBody
+						// flexBubbleContainer.Body = lineFlexBody
 					} else if strings.Contains(flexComponent, "Footer{") {
 						//TODO
 					}
