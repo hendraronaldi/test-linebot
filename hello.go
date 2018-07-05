@@ -121,16 +121,20 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					Type:   linebot.FlexComponentTypeButton,
 					Action: linebot.NewMessageTemplateAction("Yes", "Yes"),
 					Style:  linebot.FlexButtonStyleTypePrimary,
+					Color:  "#01FD51",
 				}
 				footerNo := &linebot.ButtonComponent{
 					Type:   linebot.FlexComponentTypeButton,
 					Action: linebot.NewMessageTemplateAction("No", "No"),
 					Style:  linebot.FlexButtonStyleTypePrimary,
+					Color:  "#FD0101",
 				}
 				footerComponent = append(footerComponent, footerYes, footerNo)
 				flexFormFooter = &linebot.BoxComponent{
-					Type:   linebot.FlexComponentTypeBox,
-					Layout: linebot.FlexBoxLayoutTypeHorizontal,
+					Type:     linebot.FlexComponentTypeBox,
+					Layout:   linebot.FlexBoxLayoutTypeHorizontal,
+					Spacing:  linebot.FlexComponentSpacingTypeSm,
+					Contents: footerComponent,
 				}
 				flexFormBody = &linebot.BoxComponent{
 					Type:     linebot.FlexComponentTypeBox,
