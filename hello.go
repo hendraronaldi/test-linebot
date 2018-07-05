@@ -44,8 +44,10 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Println("flex component", flex)
 				var flexBubbleContainer *linebot.BubbleContainer
 				// flexBubbleContainer.Type = linebot.FlexContainerTypeBubble
+				var lineFlexHeader *linebot.BoxComponent
 				var lineFlexHero *linebot.ImageComponent
 				var lineFlexBody *linebot.BoxComponent
+				var lineFlexFooter *linebot.BoxComponent
 				for _, flexComponent := range flex {
 					// var lineFlexHero *linebot.ImageComponent
 					// var lineFlexBody *linebot.BoxComponent
@@ -166,9 +168,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				// 	},
 				// }
 				flexBubbleContainer = &linebot.BubbleContainer{
-					Type: linebot.FlexContainerTypeBubble,
-					Hero: lineFlexHero,
-					Body: lineFlexBody,
+					Type:   linebot.FlexContainerTypeBubble,
+					Header: lineFlexHeader,
+					Hero:   lineFlexHero,
+					Body:   lineFlexBody,
+					Footer: lineFlexFooter,
 				}
 				if _, err = bot.ReplyMessage(
 					event.ReplyToken,
