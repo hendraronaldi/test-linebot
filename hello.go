@@ -43,7 +43,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				flex := strings.Split(newFlex, "|")
 				fmt.Println("flex component", flex)
 				var flexBubbleContainer *linebot.BubbleContainer
-				flexBubbleContainer.Type = linebot.FlexContainerTypeBubble
+				// flexBubbleContainer.Type = linebot.FlexContainerTypeBubble
+				var lineFlexHero *linebot.ImageComponent
 				for _, flexComponent := range flex {
 					// var lineFlexHero *linebot.ImageComponent
 					// var lineFlexBody *linebot.BoxComponent
@@ -52,11 +53,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					} else if strings.Contains(flexComponent, "Hero{") {
 						//TODO
 						flexHero := strings.Replace(strings.TrimSuffix(flexComponent, "}"), "Hero{", "", -1)
-						lineFlexHero := &linebot.ImageComponent{
+						lineFlexHero = &linebot.ImageComponent{
 							Type: linebot.FlexComponentTypeImage,
 							URL:  flexHero,
 						}
-						flexBubbleContainer.Hero = lineFlexHero
+						// flexBubbleContainer.Hero = lineFlexHero
 					} else if strings.Contains(flexComponent, "Body{") {
 						//TODO
 						// var flexBodyContent []linebot.FlexComponent
@@ -163,6 +164,10 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				// 		},
 				// 	},
 				// }
+				flexBubbleContainer = &linebot.BubbleContainer{
+					Type: linebot.FlexContainerTypeBubble,
+					Hero: lineFlexHero,
+				}
 				if _, err = bot.ReplyMessage(
 					event.ReplyToken,
 					linebot.NewFlexMessage("Flex alt text", flexBubbleContainer),
