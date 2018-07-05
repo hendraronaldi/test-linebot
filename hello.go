@@ -88,10 +88,10 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 									Size:   linebot.FlexTextSizeTypeXs,
 								}
 								bodyContentComponent = append(bodyContentComponent, bodyLabelValue)
-								separator := &linebot.SeparatorComponent{
-									Type: linebot.FlexComponentTypeSeparator,
-								}
-								bodyContentComponent = append(bodyContentComponent, separator)
+								// separator := &linebot.SeparatorComponent{
+								// 	Type: linebot.FlexComponentTypeSeparator,
+								// }
+								// bodyContentComponent = append(bodyContentComponent, separator)
 							} else {
 								bodyLabelValue = &linebot.TextComponent{
 									Type:  linebot.FlexComponentTypeText,
@@ -122,12 +122,14 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					Action: linebot.NewMessageTemplateAction("Yes", "Yes"),
 					Style:  linebot.FlexButtonStyleTypePrimary,
 					Color:  "#01FD51",
+					Height: linebot.FlexButtonHeightTypeSm,
 				}
 				footerNo := &linebot.ButtonComponent{
 					Type:   linebot.FlexComponentTypeButton,
 					Action: linebot.NewMessageTemplateAction("No", "No"),
 					Style:  linebot.FlexButtonStyleTypePrimary,
 					Color:  "#FD0101",
+					Height: linebot.FlexButtonHeightTypeSm,
 				}
 				footerComponent = append(footerComponent, footerYes, footerNo)
 				flexFormFooter = &linebot.BoxComponent{
