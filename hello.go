@@ -38,6 +38,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypeMessage {
 			switch event.Message.(type) {
 			case *linebot.TextMessage:
+				// form
+
 				newFormFlex := "Form{form ~ order;______;Nama:Tolongin;Tempat Pemesanan atau Pengambilan Barang (patokan):KFC pasirkaliki;Alamat Yang Dituju (patokan):Jl Dago Asri, Bandung;No Telepon (wajib diisi):081122334455;Catatan:cepetan yah}"
 				newFormFlex = strings.Replace(strings.TrimSuffix(newFormFlex, "}"), "Form{", "", -1)
 				form := strings.Split(newFormFlex, ";")
@@ -77,6 +79,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 									Type:   linebot.FlexComponentTypeText,
 									Text:   text,
 									Weight: linebot.FlexTextWeightTypeBold,
+									Wrap:   true,
 								}
 							} else {
 								bodyLabelValue = &linebot.TextComponent{
@@ -95,6 +98,14 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						bodyComponent = append(bodyComponent, bodyContent)
 					}
 				}
+				flexFormBody = &linebot.BoxComponent{
+					Type:     linebot.FlexComponentTypeBox,
+					Layout:   linebot.FlexBoxLayoutTypeVertical,
+					Contents: bodyComponent,
+				}
+
+				//Carousel
+
 				// newFlex := "Flex{Header{}|Hero{https://firebasestorage.googleapis.com/v0/b/talkabot-a9388.appspot.com/o/getlargeimage.png?alt=media&token=add458d4-fc1e-459b-b92d-04355d2392db}|Body{Horizontal{FlexAction{1:1:1:1:1:1:1:Rincian Toko}};Vertical{FlexAction{1:1:1:1:1:1:2:Menu}~FlexAction{1:1:1:1:1:1:3:Tolongin Beliin}}}|Footer{}}"
 				// newFlex = strings.Replace(strings.TrimSuffix(newFlex, "}"), "Flex{", "", -1)
 				// flex := strings.Split(newFlex, "|")
