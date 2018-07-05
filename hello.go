@@ -38,7 +38,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 		if event.Type == linebot.EventTypeMessage {
 			switch event.Message.(type) {
 			case *linebot.TextMessage:
-				newFlex := "Flex{Header{}|Hero{https://firebasestorage.googleapis.com/v0/b/talkabot-a9388.appspot.com/o/getlargeimage.png?alt=media&token=add458d4-fc1e-459b-b92d-04355d2392db}|Body{Horizontal{Alamat~FlexAction{1:1:1:1:1:1:1:Rincian Toko}};Vertical{FlexButton{1:1:1:1:1:1:2:Menu}~FlexButton{1:1:1:1:1:1:3:Tolongin Beliin}}}|Footer{}}"
+				newFlex := "Flex{Header{}|Hero{https://firebasestorage.googleapis.com/v0/b/talkabot-a9388.appspot.com/o/getlargeimage.png?alt=media&token=add458d4-fc1e-459b-b92d-04355d2392db}|Body{Horizontal{Alamat~FlexAction{1:1:1:1:1:1:1:Rincian Toko}};Vertical{FlexAction{1:1:1:1:1:1:2:Menu}~FlexAction{1:1:1:1:1:1:3:Tolongin Beliin}}}|Footer{}}"
 				newFlex = strings.Replace(strings.TrimSuffix(newFlex, "}"), "Flex{", "", -1)
 				flex := strings.Split(newFlex, "|")
 				fmt.Println("flex component", flex)
