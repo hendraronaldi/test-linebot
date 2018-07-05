@@ -37,6 +37,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 	for _, event := range events {
 		if event.Type == linebot.EventTypeMessage {
 			switch event.Message.(type) {
+			case *linebot.FlexMessage:
+
 			case *linebot.TextMessage:
 				// form
 
@@ -121,14 +123,14 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					Type:   linebot.FlexComponentTypeButton,
 					Action: linebot.NewMessageTemplateAction("Yes", "Yes"),
 					Style:  linebot.FlexButtonStyleTypePrimary,
-					Color:  "#01FD51",
+					Color:  "#2E874A",
 					Height: linebot.FlexButtonHeightTypeSm,
 				}
 				footerNo := &linebot.ButtonComponent{
 					Type:   linebot.FlexComponentTypeButton,
 					Action: linebot.NewMessageTemplateAction("No", "No"),
 					Style:  linebot.FlexButtonStyleTypePrimary,
-					Color:  "#FD0101",
+					Color:  "#BA2424",
 					Height: linebot.FlexButtonHeightTypeSm,
 				}
 				footerComponent = append(footerComponent, footerYes, footerNo)
