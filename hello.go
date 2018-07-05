@@ -35,11 +35,32 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	for _, event := range events {
 		if event.Type == linebot.EventTypeMessage {
-			switch message := event.Message.(type) {
+			switch event.Message.(type) {
 			case *linebot.TextMessage:
-				if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.ID+":"+message.Text+" OK!")).Do(); err != nil {
+				contents := &linebot.BubbleContainer{
+					Type: linebot.FlexContainerTypeBubble,
+					Body: &linebot.BoxComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeHorizontal,
+						Contents: []linebot.FlexComponent{
+							&linebot.TextComponent{
+								Type: linebot.FlexComponentTypeText,
+								Text: "Hello,",
+							},
+							&linebot.TextComponent{
+								Type: linebot.FlexComponentTypeText,
+								Text: "World!",
+							},
+						},
+					},
+				}
+				if _, err = bot.ReplyMessage(
+					event.ReplyToken,
+					linebot.NewFlexMessage("Flex alt text", contents),
+				).Do(); err != nil {
 					log.Print(err)
 				}
+
 			}
 		}
 	}
