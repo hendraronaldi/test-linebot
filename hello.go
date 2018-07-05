@@ -59,6 +59,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						lineFlexHero = &linebot.ImageComponent{
 							Type: linebot.FlexComponentTypeImage,
 							URL:  flexHero,
+							Size: linebot.FlexImageSizeTypeFull,
 						}
 						// flexBubbleContainer.Hero = lineFlexHero
 					} else if strings.Contains(flexComponent, "Body{") {
@@ -85,6 +86,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 										lineFlexBodyButton := &linebot.ButtonComponent{
 											Type:   linebot.FlexComponentTypeButton,
 											Action: lineFlexAction,
+											Style:  linebot.FlexButtonStyleTypePrimary,
+											Color:  "#03FC87",
 										}
 										lineFlexBodyHorizontalComponent = append(lineFlexBodyHorizontalComponent, lineFlexBodyButton)
 									} else {
@@ -119,6 +122,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 										lineFlexBodyButton := &linebot.ButtonComponent{
 											Type:   linebot.FlexComponentTypeButton,
 											Action: lineFlexAction,
+											Style:  linebot.FlexButtonStyleTypePrimary,
+											Color:  "#03FC87",
 										}
 										lineFlexBodyVerticalComponent = append(lineFlexBodyVerticalComponent, lineFlexBodyButton)
 									} else {
