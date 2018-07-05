@@ -73,13 +73,13 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								flexBodyHorizontal := strings.Split(strings.Replace(strings.TrimSuffix(flexBodyComponent, "}"), "Horizontal{", "", -1), "~")
 								for _, flexBodyHorizontalComponent := range flexBodyHorizontal {
 									if strings.Contains(flexBodyHorizontalComponent, "FlexAction{") {
-										flexActionLabel := strings.Replace(strings.TrimSuffix(flexBodyHorizontalComponent, "}"), "FlexAction{", "", -1)
-										var flexAction string
+										flexAction := strings.Replace(strings.TrimSuffix(flexBodyHorizontalComponent, "}"), "FlexAction{", "", -1)
+										var flexActionLabel string
 										if strings.Contains(flexActionLabel, ":") {
-											flexActionElements := strings.Split(flexActionLabel, ":")
-											flexAction += flexActionElements[len(flexActionElements)-1]
+											flexActionElements := strings.Split(flexAction, ":")
+											flexActionLabel += flexActionElements[len(flexActionElements)-1]
 										} else {
-											flexAction += flexActionLabel
+											flexActionLabel += flexAction
 										}
 										lineFlexAction := linebot.NewMessageTemplateAction(flexActionLabel, flexAction)
 										lineFlexBodyButton := &linebot.ButtonComponent{
@@ -107,13 +107,13 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								flexBodyVertical := strings.Split(strings.Replace(strings.TrimSuffix(flexBodyComponent, ""), "Vertical{", "", -1), "~")
 								for _, flexBodyVerticalComponent := range flexBodyVertical {
 									if strings.Contains(flexBodyVerticalComponent, "FlexAction{") {
-										flexActionLabel := strings.Replace(strings.TrimSuffix(flexBodyVerticalComponent, "}"), "FlexAction{", "", -1)
-										var flexAction string
+										flexAction := strings.Replace(strings.TrimSuffix(flexBodyVerticalComponent, "}"), "FlexAction{", "", -1)
+										var flexActionLabel string
 										if strings.Contains(flexActionLabel, ":") {
-											flexActionElements := strings.Split(flexActionLabel, ":")
-											flexAction += flexActionElements[len(flexActionElements)-1]
+											flexActionElements := strings.Split(flexAction, ":")
+											flexActionLabel += flexActionElements[len(flexActionElements)-1]
 										} else {
-											flexAction += flexActionLabel
+											flexActionLabel += flexAction
 										}
 										lineFlexAction := linebot.NewMessageTemplateAction(flexActionLabel, flexAction)
 										lineFlexBodyButton := &linebot.ButtonComponent{
