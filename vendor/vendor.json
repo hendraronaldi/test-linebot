@@ -1,0 +1,13 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "mmK/Z/F9LOenziCPcbgt8uDK0hw=",
+			"path": "github.com/line/line-bot-sdk-go/linebot",
+			"revision": "546d369e1ac50c673b87f9ab8c0ba8da8aab6b44",
+			"revisionTime": "2018-07-02T11:20:58Z"
+		}
+	],
+	"rootPath": "work/testing"
+}
