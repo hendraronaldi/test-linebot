@@ -46,6 +46,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				var flexBubbleContainer *linebot.BubbleContainer
 				var flexFormHeader *linebot.BoxComponent
 				var flexFormBody *linebot.BoxComponent
+				var flexFormFooter *linebot.BoxComponent
 				var bodyComponent []linebot.FlexComponent
 				for _, row := range form {
 					if strings.Contains(row, "form ~ ") {
@@ -58,18 +59,18 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							Text:   formTitle,
 							Size:   linebot.FlexTextSizeTypeXl,
 							Align:  linebot.FlexComponentAlignTypeCenter,
-							Margin: linebot.FlexComponentMarginTypeSm,
 							Weight: linebot.FlexTextWeightTypeBold,
 						}
 						headerComponent = append(headerComponent, header)
-						separator := &linebot.SeparatorComponent{
-							Type: linebot.FlexComponentTypeSeparator,
-						}
-						headerComponent = append(headerComponent, separator)
+						// separator := &linebot.SeparatorComponent{
+						// 	Type: linebot.FlexComponentTypeSeparator,
+						// }
+						// headerComponent = append(headerComponent, separator)
 						flexFormHeader = &linebot.BoxComponent{
 							Type:     linebot.FlexComponentTypeBox,
 							Layout:   linebot.FlexBoxLayoutTypeVertical,
 							Contents: headerComponent,
+							Margin:   linebot.FlexComponentMarginTypeSm,
 						}
 					} else if strings.Contains(row, ":") {
 						var bodyContent *linebot.BoxComponent
@@ -93,10 +94,11 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 								bodyContentComponent = append(bodyContentComponent, separator)
 							} else {
 								bodyLabelValue = &linebot.TextComponent{
-									Type: linebot.FlexComponentTypeText,
-									Text: text,
-									Wrap: true,
-									Size: linebot.FlexTextSizeTypeXs,
+									Type:  linebot.FlexComponentTypeText,
+									Text:  text,
+									Wrap:  true,
+									Align: linebot.FlexComponentAlignTypeEnd,
+									Size:  linebot.FlexTextSizeTypeXs,
 								}
 								bodyContentComponent = append(bodyContentComponent, bodyLabelValue)
 							}
@@ -105,6 +107,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							Type:     linebot.FlexComponentTypeBox,
 							Layout:   linebot.FlexBoxLayoutTypeHorizontal,
 							Contents: bodyContentComponent,
+							Spacing:  linebot.FlexComponentSpacingTypeMd,
 						}
 						bodyComponent = append(bodyComponent, bodyContent)
 						separator := &linebot.SeparatorComponent{
@@ -112,6 +115,22 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						}
 						bodyComponent = append(bodyComponent, separator)
 					}
+				}
+				var footerComponent []linebot.FlexComponent
+				footerYes := &linebot.ButtonComponent{
+					Type:   linebot.FlexComponentTypeButton,
+					Action: linebot.NewMessageTemplateAction("Yes", "Yes"),
+					Style:  linebot.FlexButtonStyleTypePrimary,
+				}
+				footerNo := &linebot.ButtonComponent{
+					Type:   linebot.FlexComponentTypeButton,
+					Action: linebot.NewMessageTemplateAction("No", "No"),
+					Style:  linebot.FlexButtonStyleTypePrimary,
+				}
+				footerComponent = append(footerComponent, footerYes, footerNo)
+				flexFormFooter = &linebot.BoxComponent{
+					Type:   linebot.FlexComponentTypeBox,
+					Layout: linebot.FlexBoxLayoutTypeHorizontal,
 				}
 				flexFormBody = &linebot.BoxComponent{
 					Type:     linebot.FlexComponentTypeBox,
@@ -250,6 +269,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 					Type:   linebot.FlexContainerTypeBubble,
 					Header: flexFormHeader,
 					Body:   flexFormBody,
+					Footer: flexFormFooter,
 				}
 				if _, err = bot.ReplyMessage(
 					event.ReplyToken,
