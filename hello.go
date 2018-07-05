@@ -87,7 +87,8 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 											Type:   linebot.FlexComponentTypeButton,
 											Action: lineFlexAction,
 											Style:  linebot.FlexButtonStyleTypePrimary,
-											Color:  "#03FC87",
+											Color:  "#000000",
+											Margin: linebot.FlexComponentMarginTypeSm,
 										}
 										lineFlexBodyHorizontalComponent = append(lineFlexBodyHorizontalComponent, lineFlexBodyButton)
 									} else {
@@ -122,8 +123,9 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 										lineFlexBodyButton := &linebot.ButtonComponent{
 											Type:   linebot.FlexComponentTypeButton,
 											Action: lineFlexAction,
-											Style:  linebot.FlexButtonStyleTypePrimary,
-											Color:  "#03FC87",
+											Style:  linebot.FlexButtonStyleTypeSecondary,
+											Color:  "#000000",
+											Margin: linebot.FlexComponentMarginTypeSm,
 										}
 										lineFlexBodyVerticalComponent = append(lineFlexBodyVerticalComponent, lineFlexBodyButton)
 									} else {
