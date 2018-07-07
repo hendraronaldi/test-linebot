@@ -42,9 +42,13 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 			case *linebot.TextMessage:
 				// form
 
-				newFormFlex := "Form{form ~ order;______;Nama:Tolongin;Tempat Pemesanan atau Pengambilan Barang (patokan):KFC pasirkaliki;Alamat Yang Dituju (patokan):Jl Dago Asri, Bandung;No Telepon (wajib diisi):081122334455;Catatan:cepetan yah}"
-				newFormFlex = strings.Replace(strings.TrimSuffix(newFormFlex, "}"), "Form{", "", -1)
-				form := strings.Split(newFormFlex, ";")
+				curText := "FlexForm{form ~ order\n______\nNama (sesuai line):Tolongin\nTempat Pemesanan atau Pengambilan Barang (patokan):KFC pasirkaliki\nAlamat Yang Dituju (patokan):Jl Dago Asri, Bandung\nNo Telepon (wajib diisi):081122334455\nCatatan:cepetan yah`Confirm{Yes|No}}"
+				curText = strings.Replace(strings.TrimSuffix(curText, "}"), "FlexForm{", "", -1)
+				formText := strings.Split(curText, "`")[0]
+				form := strings.Split(formText, "\n")
+				formFooter := strings.Split(curText, "`")[1]
+				formFooter = strings.Replace(strings.TrimSuffix(formFooter, "}"), "Confirm{", "", -1)
+				formFooterComponent := strings.Split(formFooter, "|")
 				var flexBubbleContainer *linebot.BubbleContainer
 				var flexFormHeader *linebot.BoxComponent
 				var flexFormBody *linebot.BoxComponent
@@ -55,7 +59,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						var headerComponent []linebot.FlexComponent
 						var header *linebot.TextComponent
 						titleElements := strings.Split(row, " ~ ")
-						formTitle := titleElements[len(titleElements)-1]
+						formTitle := strings.Title(titleElements[len(titleElements)-1])
 						header = &linebot.TextComponent{
 							Type:   linebot.FlexComponentTypeText,
 							Text:   formTitle,
@@ -64,10 +68,6 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 							Weight: linebot.FlexTextWeightTypeBold,
 						}
 						headerComponent = append(headerComponent, header)
-						// separator := &linebot.SeparatorComponent{
-						// 	Type: linebot.FlexComponentTypeSeparator,
-						// }
-						// headerComponent = append(headerComponent, separator)
 						flexFormHeader = &linebot.BoxComponent{
 							Type:     linebot.FlexComponentTypeBox,
 							Layout:   linebot.FlexBoxLayoutTypeVertical,
@@ -90,10 +90,6 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 									Size:   linebot.FlexTextSizeTypeXs,
 								}
 								bodyContentComponent = append(bodyContentComponent, bodyLabelValue)
-								// separator := &linebot.SeparatorComponent{
-								// 	Type: linebot.FlexComponentTypeSeparator,
-								// }
-								// bodyContentComponent = append(bodyContentComponent, separator)
 							} else {
 								bodyLabelValue = &linebot.TextComponent{
 									Type:  linebot.FlexComponentTypeText,
@@ -118,22 +114,25 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 						bodyComponent = append(bodyComponent, separator)
 					}
 				}
+
 				var footerComponent []linebot.FlexComponent
-				footerYes := &linebot.ButtonComponent{
-					Type:   linebot.FlexComponentTypeButton,
-					Action: linebot.NewMessageTemplateAction("Yes", "Yes"),
-					Style:  linebot.FlexButtonStyleTypePrimary,
-					Color:  "#2E874A",
-					Height: linebot.FlexButtonHeightTypeSm,
+				for _, button := range formFooterComponent {
+					var color string
+					if button == "Yes" {
+						color = "#2E874A"
+					} else {
+						color = "#BA2424"
+					}
+					buttonFlex := &linebot.ButtonComponent{
+						Type:   linebot.FlexComponentTypeButton,
+						Action: linebot.NewMessageTemplateAction(button, button+" ~ "+formText),
+						Style:  linebot.FlexButtonStyleTypePrimary,
+						Color:  color,
+						Height: linebot.FlexButtonHeightTypeSm,
+					}
+					footerComponent = append(footerComponent, buttonFlex)
 				}
-				footerNo := &linebot.ButtonComponent{
-					Type:   linebot.FlexComponentTypeButton,
-					Action: linebot.NewMessageTemplateAction("No", "No"),
-					Style:  linebot.FlexButtonStyleTypePrimary,
-					Color:  "#BA2424",
-					Height: linebot.FlexButtonHeightTypeSm,
-				}
-				footerComponent = append(footerComponent, footerYes, footerNo)
+
 				flexFormFooter = &linebot.BoxComponent{
 					Type:     linebot.FlexComponentTypeBox,
 					Layout:   linebot.FlexBoxLayoutTypeHorizontal,
