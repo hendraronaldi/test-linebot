@@ -52,6 +52,10 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				confirm := "Confirm{Are you sure?;Yes|No}"
 				reply = append(reply, LineFlexConfirm(confirm))
 
+				//Button
+				button := "Button{Test;1:1:1:biodata|2:1:lalala}"
+				reply = append(reply, LineFlexButton(button))
+
 				if _, err = bot.ReplyMessage(
 					event.ReplyToken,
 					reply...,
