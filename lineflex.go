@@ -51,9 +51,9 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 		}
 		fmt.Println("element", element)
 		buttonCarousel = append(buttonCarousel, buttonColumn)
-		fmt.Println("prev cur btn car", buttonCarousel)
+		fmt.Println("prev cur btn car", fmt.Sprint(buttonCarousel))
 		if len(buttonCarousel) == 4 || index == len(buttonText)-1 {
-			fmt.Println("cur btn car", buttonCarousel)
+			fmt.Println("cur btn car", fmt.Sprint(buttonCarousel))
 			buttonTemplate := &linebot.BoxComponent{
 				Type:     linebot.FlexComponentTypeBox,
 				Layout:   linebot.FlexBoxLayoutTypeVertical,
@@ -75,7 +75,7 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 			}
 			carouselButtonComponent = append(carouselButtonComponent, buttonFlexTemplate)
 			buttonCarousel = buttonCarousel[:0]
-			fmt.Println("btn car", buttonCarousel)
+			fmt.Println("btn car", fmt.Sprint(buttonCarousel))
 		}
 	}
 	carouselButtonFlexTemplate := &linebot.CarouselContainer{
