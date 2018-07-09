@@ -174,23 +174,16 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 		for i := 0; i < len(content); i++ {
 			element := strings.Split(content[i], "~")
 			if i == 0 {
-				//TODO hero
+				//hero
 				image = element[0]
-				// var headerComponent []linebot.FlexComponent
 				lineFlexHero = &linebot.ImageComponent{
 					Type:       linebot.FlexComponentTypeImage,
 					URL:        image,
 					Size:       linebot.FlexImageSizeTypeFull,
 					AspectMode: linebot.FlexImageAspectModeTypeCover,
 				}
-				// headerComponent = append(headerComponent, headerImage)
-				// lineFlexHeader = &linebot.BoxComponent{
-				// 	Type:     linebot.FlexComponentTypeBox,
-				// 	Layout:   linebot.FlexBoxLayoutTypeVertical,
-				// 	Contents: headerComponent,
-				// }
 
-				//TODO body
+				//body
 				title = element[1]
 				titleComponent := &linebot.TextComponent{
 					Type:   linebot.FlexComponentTypeText,
@@ -212,14 +205,12 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 					Contents: lineFlexBodyComponent,
 				}
 			} else {
-				//TODO footer
+				//footer
 				var footerButton *linebot.ButtonComponent
 				var buttonAction linebot.TemplateAction
 				if element[2] == "url" {
-					// action = append(action, linebot.NewURITemplateAction(element[0], element[1]))
 					buttonAction = linebot.NewURITemplateAction(element[0], element[1])
 				} else if element[2] == "button" {
-					// action = append(action, linebot.NewMessageTemplateAction(element[0], element[1]))
 					buttonAction = linebot.NewMessageTemplateAction(element[0], element[1])
 				}
 				footerButton = &linebot.ButtonComponent{
@@ -252,17 +243,7 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 			Styles: blockStyle,
 		}
 		carousel = append(carousel, flexBubbleContainer)
-
-		// carouselColumn := linebot.NewCarouselColumn(image,
-		// 	title,
-		// 	description,
-		// 	action...,
-		// )
-		// carousel = append(carousel, carouselColumn)
 	}
-	// template := linebot.NewCarouselTemplate(
-	// 	carousel...,
-	// )
 
 	carouselContainer = &linebot.CarouselContainer{
 		Type:     linebot.FlexContainerTypeCarousel,
