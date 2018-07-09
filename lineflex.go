@@ -191,7 +191,6 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 				titleComponent := &linebot.TextComponent{
 					Type:   linebot.FlexComponentTypeText,
 					Text:   title,
-					Size:   linebot.FlexTextSizeTypeXl,
 					Weight: linebot.FlexTextWeightTypeBold,
 					Wrap:   true,
 				}
@@ -199,6 +198,7 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 				descriptionComponent := &linebot.TextComponent{
 					Type: linebot.FlexComponentTypeText,
 					Text: description,
+					Size: linebot.FlexTextSizeTypeSm,
 					Wrap: true,
 				}
 				lineFlexBodyComponent = append(lineFlexBodyComponent, titleComponent, descriptionComponent)
@@ -222,7 +222,7 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 					Type:   linebot.FlexComponentTypeButton,
 					Action: buttonAction,
 					Style:  linebot.FlexButtonStyleTypeLink,
-					Margin: linebot.FlexComponentMarginTypeSm,
+					Margin: linebot.FlexComponentMarginTypeXs,
 				}
 				lineFooterComponent = append(lineFooterComponent, footerButton)
 			}
