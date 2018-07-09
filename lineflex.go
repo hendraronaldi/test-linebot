@@ -168,7 +168,7 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 		var description string
 		// var action []linebot.TemplateAction
 		var flexBubbleContainer *linebot.BubbleContainer
-		var lineFlexHeader *linebot.BoxComponent
+		// var lineFlexHeader *linebot.BoxComponent
 		var lineFlexHero *linebot.ImageComponent
 		var lineFlexBody *linebot.BoxComponent
 		var lineFlexBodyComponent []linebot.FlexComponent
@@ -233,12 +233,18 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 			Contents: lineFooterComponent,
 		}
 
+		blockStyle := &linebot.BubbleStyle{
+			Footer: &linebot.BlockStyle{
+				Separator: true,
+			},
+		}
+
 		flexBubbleContainer = &linebot.BubbleContainer{
 			Type:   linebot.FlexContainerTypeBubble,
-			Header: lineFlexHeader,
 			Hero:   lineFlexHero,
 			Body:   lineFlexBody,
 			Footer: lineFlexFooter,
+			Styles: blockStyle,
 		}
 		carousel = append(carousel, flexBubbleContainer)
 
@@ -272,7 +278,7 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 	var flexFormBody *linebot.BoxComponent
 	var flexFormFooter *linebot.BoxComponent
 	var bodyComponent []linebot.FlexComponent
-	for _, row := range form {
+	for index, row := range form {
 		if strings.Contains(row, "form ~ ") {
 			var headerComponent []linebot.FlexComponent
 			var header *linebot.TextComponent
@@ -329,7 +335,9 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 			separator := &linebot.SeparatorComponent{
 				Type: linebot.FlexComponentTypeSeparator,
 			}
-			bodyComponent = append(bodyComponent, separator)
+			if index < len(form)-1 {
+				bodyComponent = append(bodyComponent, separator)
+			}
 		}
 	}
 
@@ -364,11 +372,21 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 		Spacing:  linebot.FlexComponentSpacingTypeSm,
 	}
 
+	blockStyle := &linebot.BubbleStyle{
+		Body: &linebot.BlockStyle{
+			Separator: true,
+		},
+		Footer: &linebot.BlockStyle{
+			Separator: true,
+		},
+	}
+
 	flexBubbleContainer = &linebot.BubbleContainer{
 		Type:   linebot.FlexContainerTypeBubble,
 		Header: flexFormHeader,
 		Body:   flexFormBody,
 		Footer: flexFormFooter,
+		Styles: blockStyle,
 	}
 	return linebot.NewFlexMessage("flex", flexBubbleContainer)
 }
