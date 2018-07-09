@@ -7,14 +7,10 @@ import (
 )
 
 func LineFlexButton(curText string) *linebot.FlexMessage {
-	// var back string
-	// var home string
-	// var image string
 	var element []string
 	var buttonText []string
 	title := " "
 	curText = curText[7 : len(curText)-1]
-	// curText = strings.TrimRight(strings.TrimLeft(curText, "Button{"), "}")
 	if strings.Contains(curText, ";") {
 		element = strings.Split(curText, ";")
 		title = element[0]
@@ -39,50 +35,19 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 	var buttonCarousel []linebot.FlexComponent
 	for index := 0; index < len(buttonText); index++ {
 		element := buttonText[index]
-		// if strings.Contains(buttonText[index], "~") {
-		// 	image = strings.Split(buttonText[index], "~")[0]
-		// 	element = strings.Split(buttonText[index], "~")[1]
-		// }
 		var text string
 		if strings.Contains(element, ":") {
 			content := strings.Split(element, ":")
-			// if strings.ToLower(content[len(content)-1]) == "back" {
-			// 	back = content[len(content)-1]
-			// } else if strings.ToLower(content[len(content)-1]) == "home" {
-			// 	home = content[len(content)-1]
-			// } else {
 			text = content[len(content)-1]
-			// }
 		} else {
-			// if strings.ToLower(element) == "back" {
-			// 	back = element
-			// } else if strings.ToLower(element) == "home" {
-			// 	home = element
-			// } else {
 			text = element
-			// }
 		}
 		var buttonColumn *linebot.ButtonComponent
 		buttonColumn = &linebot.ButtonComponent{
 			Type:   linebot.FlexComponentTypeButton,
 			Action: linebot.NewMessageTemplateAction(text, element),
 		}
-		// if back != "" && home != "" {
-		// 	buttonColumn = linebot.NewCarouselColumn("",
-		// 		"",
-		// 		" ",
-		// 		linebot.NewMessageTemplateAction(home, home),
-		// 		linebot.NewMessageTemplateAction(back, back),
-		// 	)
-		// 	buttonCarousel = append(buttonCarousel, buttonColumn)
-		// } else if back == "" && home == "" {
-		// 	buttonColumn = linebot.NewCarouselColumn(image,
-		// 		"",
-		// 		title,
-		// 		linebot.NewMessageTemplateAction(text, element),
-		// 	)
 		buttonCarousel = append(buttonCarousel, buttonColumn)
-		// }
 	}
 	buttonTemplate := &linebot.BoxComponent{
 		Type:     linebot.FlexComponentTypeBox,
@@ -106,27 +71,19 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 	}
 
 	return linebot.NewFlexMessage("buttons", buttonFlexTemplate)
-
-	// 	template := linebot.NewCarouselTemplate(
-	// 		buttonCarousel...,
-	// 	)
 }
 
 func LineFlexConfirm(curText string) *linebot.FlexMessage {
 	curText = strings.TrimRight(strings.TrimLeft(curText, "Confirm{"), "}")
 	var confirmationText string
-	// var onSave string
 	var index int
-	// if strings.Contains(curText, ";") {
 	element := strings.Split(curText, ";")
 	confirmationText = element[0]
 	if len(element) > 2 {
-		// onSave = element[1]
 		index = 2
 	} else {
 		index = 1
 	}
-	// }
 	confirmText := strings.Split(element[index], "|")
 
 	var confirmFlexTemplate *linebot.BubbleContainer
@@ -206,10 +163,9 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 		var image string
 		var title string
 		var description string
-		// var action []linebot.TemplateAction
 		var flexBubbleContainer *linebot.BubbleContainer
 		var lineFlexHeader *linebot.BoxComponent
-		// var lineFlexHero *linebot.ImageComponent
+		var lineFlexHero *linebot.ImageComponent
 		var lineFlexBody *linebot.BoxComponent
 		var lineFlexBodyComponent []linebot.FlexComponent
 		var lineFlexFooter *linebot.BoxComponent
@@ -220,18 +176,19 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 			if i == 0 {
 				//TODO hero
 				image = element[0]
-				var headerComponent []linebot.FlexComponent
-				headerImage := &linebot.ImageComponent{
-					Type: linebot.FlexComponentTypeImage,
-					URL:  image,
-					Size: linebot.FlexImageSizeTypeFull,
+				// var headerComponent []linebot.FlexComponent
+				lineFlexHero = &linebot.ImageComponent{
+					Type:       linebot.FlexComponentTypeImage,
+					URL:        image,
+					Size:       linebot.FlexImageSizeTypeFull,
+					AspectMode: linebot.FlexImageAspectModeTypeCover,
 				}
-				headerComponent = append(headerComponent, headerImage)
-				lineFlexHeader = &linebot.BoxComponent{
-					Type:     linebot.FlexComponentTypeBox,
-					Layout:   linebot.FlexBoxLayoutTypeVertical,
-					Contents: headerComponent,
-				}
+				// headerComponent = append(headerComponent, headerImage)
+				// lineFlexHeader = &linebot.BoxComponent{
+				// 	Type:     linebot.FlexComponentTypeBox,
+				// 	Layout:   linebot.FlexBoxLayoutTypeVertical,
+				// 	Contents: headerComponent,
+				// }
 
 				//TODO body
 				title = element[1]
@@ -289,6 +246,7 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 		flexBubbleContainer = &linebot.BubbleContainer{
 			Type:   linebot.FlexContainerTypeBubble,
 			Header: lineFlexHeader,
+			Hero:   lineFlexHero,
 			Body:   lineFlexBody,
 			Footer: lineFlexFooter,
 			Styles: blockStyle,
