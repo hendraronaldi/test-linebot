@@ -110,6 +110,7 @@ func LineFlexConfirm(curText string) *linebot.FlexMessage {
 	templateHeaderComponent = append(templateBodyComponent, confirmTextComponent)
 	templateHeader = &linebot.BoxComponent{
 		Type:     linebot.FlexComponentTypeBox,
+		Layout:   linebot.FlexBoxLayoutTypeBaseline,
 		Contents: templateHeaderComponent,
 	}
 
