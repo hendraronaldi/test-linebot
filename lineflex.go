@@ -36,6 +36,7 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 
 	var buttonCarousel []linebot.FlexComponent
 	for index := range buttonText {
+		fmt.Println("index", index)
 		element := buttonText[index]
 		var text string
 		if strings.Contains(element, ":") {
@@ -74,6 +75,21 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 			// buttonCarousel = buttonCarousel[:0]
 		}
 	}
+	// var buttonTemplate *linebot.BoxComponent
+	// if len(buttonCarousel) <= 4 {
+	// 	buttonTemplate := &linebot.BoxComponent{
+	// 		Type:     linebot.FlexComponentTypeBox,
+	// 		Layout:   linebot.FlexBoxLayoutTypeVertical,
+	// 		Contents: buttonCarousel,
+	// 	}
+	// } else {
+	// 	for index := range buttonCarousel {
+	// 		if (index > 0 && index %4 == 0) || index == len(buttonCarousel) - 1 {
+	// 			if
+	// 		}
+	// 	}
+	// }
+
 	carouselButtonFlexTemplate := &linebot.CarouselContainer{
 		Type:     linebot.FlexContainerTypeCarousel,
 		Contents: carouselButtonComponent,
