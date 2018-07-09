@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/line/line-bot-sdk-go/linebot"
@@ -48,8 +49,11 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 			Type:   linebot.FlexComponentTypeButton,
 			Action: linebot.NewMessageTemplateAction(text, element),
 		}
+		fmt.Println("element", element)
 		buttonCarousel = append(buttonCarousel, buttonColumn)
+		fmt.Println("prev cur btn car", buttonCarousel)
 		if len(buttonCarousel) == 4 || index == len(buttonText)-1 {
+			fmt.Println("cur btn car", buttonCarousel)
 			buttonTemplate := &linebot.BoxComponent{
 				Type:     linebot.FlexComponentTypeBox,
 				Layout:   linebot.FlexBoxLayoutTypeVertical,
@@ -71,6 +75,7 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 			}
 			carouselButtonComponent = append(carouselButtonComponent, buttonFlexTemplate)
 			buttonCarousel = buttonCarousel[:0]
+			fmt.Println("btn car", buttonCarousel)
 		}
 	}
 	carouselButtonFlexTemplate := &linebot.CarouselContainer{
