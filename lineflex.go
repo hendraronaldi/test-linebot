@@ -22,6 +22,19 @@ import (
 // 	} else {
 // 		buttonText = strings.Split(curText, "|")
 // 	}
+// 	var templateHeaderComponent []linebot.FlexComponent
+// 	headerTextComponent := &linebot.TextComponent{
+// 		Type:   linebot.FlexComponentTypeText,
+// 		Text:   title,
+// 		Weight: linebot.FlexTextWeightTypeBold,
+// 		Wrap:   true,
+// 	}
+// 	templateHeaderComponent = append(templateHeaderComponent, headerTextComponent)
+// 	templateHeader := &linebot.BoxComponent{
+// 		Type:     linebot.FlexComponentTypeBox,
+// 		Layout:   linebot.FlexBoxLayoutTypeBaseline,
+// 		Contents: templateHeaderComponent,
+// 	}
 
 // 	var buttonCarousel []*linebot.CarouselColumn
 // 	for index := 0; index < len(buttonText); index++ {
@@ -107,7 +120,7 @@ func LineFlexConfirm(curText string) *linebot.FlexMessage {
 		Weight: linebot.FlexTextWeightTypeBold,
 		Wrap:   true,
 	}
-	templateHeaderComponent = append(templateBodyComponent, confirmTextComponent)
+	templateHeaderComponent = append(templateHeaderComponent, confirmTextComponent)
 	templateHeader = &linebot.BoxComponent{
 		Type:     linebot.FlexComponentTypeBox,
 		Layout:   linebot.FlexBoxLayoutTypeBaseline,
@@ -183,7 +196,7 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 				lineFlexHero = &linebot.ImageComponent{
 					Type: linebot.FlexComponentTypeImage,
 					URL:  image,
-					Size: linebot.FlexImageSizeTypeFull,
+					Size: linebot.FlexImageSizeTypeLg,
 				}
 
 				//TODO body
@@ -191,6 +204,7 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 				titleComponent := &linebot.TextComponent{
 					Type:   linebot.FlexComponentTypeText,
 					Text:   title,
+					Size:   linebot.FlexTextSizeTypeLg,
 					Weight: linebot.FlexTextWeightTypeBold,
 					Wrap:   true,
 				}
@@ -198,7 +212,6 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 				descriptionComponent := &linebot.TextComponent{
 					Type: linebot.FlexComponentTypeText,
 					Text: description,
-					Size: linebot.FlexTextSizeTypeSm,
 					Wrap: true,
 				}
 				lineFlexBodyComponent = append(lineFlexBodyComponent, titleComponent, descriptionComponent)
