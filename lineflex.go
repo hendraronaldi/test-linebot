@@ -51,11 +51,21 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 		}
 		fmt.Println("element", element)
 		buttonCarousel = append(buttonCarousel, buttonColumn)
-		if len(buttonCarousel) == 4 || index == len(buttonText)-1 {
-			buttonTemplate := &linebot.BoxComponent{
+		if (index > 0 && index%4 == 0) || index == len(buttonText)-1 {
+			var buttonTemplate *linebot.BoxComponent
+			var start int
+			var end int
+			if index%4 == 0 {
+				start = index - 4
+				end = index
+			} else {
+				start = index - index%4
+				end = len(buttonCarousel)
+			}
+			buttonTemplate = &linebot.BoxComponent{
 				Type:     linebot.FlexComponentTypeBox,
 				Layout:   linebot.FlexBoxLayoutTypeVertical,
-				Contents: buttonCarousel,
+				Contents: buttonCarousel[start:end],
 			}
 			blockStyle := &linebot.BubbleStyle{
 				Header: &linebot.BlockStyle{
