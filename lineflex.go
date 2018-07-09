@@ -6,7 +6,73 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
-func LineConfirmCarousel(curText string) *linebot.FlexMessage {
+// func LineFlexButton(curText string) {
+// 	var back string
+// 	var home string
+// 	var image string
+// 	var element []string
+// 	var buttonText []string
+// 	title := " "
+// 	curText = curText[7 : len(curText)-1]
+// 	// curText = strings.TrimRight(strings.TrimLeft(curText, "Button{"), "}")
+// 	if strings.Contains(curText, ";") {
+// 		element = strings.Split(curText, ";")
+// 		title = element[0]
+// 		buttonText = strings.Split(element[1], "|")
+// 	} else {
+// 		buttonText = strings.Split(curText, "|")
+// 	}
+
+// 	var buttonCarousel []*linebot.CarouselColumn
+// 	for index := 0; index < len(buttonText); index++ {
+// 		element := buttonText[index]
+// 		// if strings.Contains(buttonText[index], "~") {
+// 		// 	image = strings.Split(buttonText[index], "~")[0]
+// 		// 	element = strings.Split(buttonText[index], "~")[1]
+// 		// }
+// 		var text string
+// 		if strings.Contains(element, ":") {
+// 			content := strings.Split(element, ":")
+// 			if strings.ToLower(content[len(content)-1]) == "back" {
+// 				back = content[len(content)-1]
+// 			} else if strings.ToLower(content[len(content)-1]) == "home" {
+// 				home = content[len(content)-1]
+// 			} else {
+// 				text = content[len(content)-1]
+// 			}
+// 		} else {
+// 			if strings.ToLower(element) == "back" {
+// 				back = element
+// 			} else if strings.ToLower(element) == "home" {
+// 				home = element
+// 			} else {
+// 				text = element
+// 			}
+// 		}
+// 		var buttonColumn *linebot.CarouselColumn
+// 		if back != "" && home != "" {
+// 			buttonColumn = linebot.NewCarouselColumn("",
+// 				"",
+// 				" ",
+// 				linebot.NewMessageTemplateAction(home, home),
+// 				linebot.NewMessageTemplateAction(back, back),
+// 			)
+// 			buttonCarousel = append(buttonCarousel, buttonColumn)
+// 		} else if back == "" && home == "" {
+// 			buttonColumn = linebot.NewCarouselColumn(image,
+// 				"",
+// 				title,
+// 				linebot.NewMessageTemplateAction(text, element),
+// 			)
+// 			buttonCarousel = append(buttonCarousel, buttonColumn)
+// 		}
+// 	}
+// 	template := linebot.NewCarouselTemplate(
+// 		buttonCarousel...,
+// 	)
+// }
+
+func LineFlexConfirm(curText string) *linebot.FlexMessage {
 	curText = strings.TrimRight(strings.TrimLeft(curText, "Confirm{"), "}")
 	var confirmationText string
 	// var onSave string
@@ -24,14 +90,16 @@ func LineConfirmCarousel(curText string) *linebot.FlexMessage {
 	confirmText := strings.Split(element[index], "|")
 
 	var confirmFlexTemplate *linebot.BubbleContainer
+	var templateHeader *linebot.BoxComponent
 	var templateBody *linebot.BoxComponent
+	var templateHeaderComponent []linebot.FlexComponent
 	var templateBodyComponent []linebot.FlexComponent
 	var confirmTextComponent *linebot.TextComponent
-	var separator *linebot.SeparatorComponent
 	var confirmButtonTemplate *linebot.BoxComponent
 	var confirmButtonTemplateComponent []linebot.FlexComponent
 	var confirmButtonYes *linebot.ButtonComponent
 	var confirmButtonNo *linebot.ButtonComponent
+	var blockStyle *linebot.BubbleStyle
 
 	confirmTextComponent = &linebot.TextComponent{
 		Type:   linebot.FlexComponentTypeText,
@@ -39,10 +107,11 @@ func LineConfirmCarousel(curText string) *linebot.FlexMessage {
 		Weight: linebot.FlexTextWeightTypeBold,
 		Wrap:   true,
 	}
-	separator = &linebot.SeparatorComponent{
-		Type: linebot.FlexComponentTypeSeparator,
+	templateHeaderComponent = append(templateBodyComponent, confirmTextComponent)
+	templateHeader = &linebot.BoxComponent{
+		Type:     linebot.FlexComponentTypeBox,
+		Contents: templateHeaderComponent,
 	}
-	templateBodyComponent = append(templateBodyComponent, confirmTextComponent, separator)
 
 	confirmButtonYes = &linebot.ButtonComponent{
 		Type:   linebot.FlexComponentTypeButton,
@@ -68,27 +137,23 @@ func LineConfirmCarousel(curText string) *linebot.FlexMessage {
 		Contents: templateBodyComponent,
 	}
 
+	blockStyle = &linebot.BubbleStyle{
+		Header: &linebot.BlockStyle{
+			BackgroundColor: "#e5e5e5",
+		},
+		Footer: &linebot.BlockStyle{
+			Separator: true,
+		},
+	}
+
 	confirmFlexTemplate = &linebot.BubbleContainer{
-		Type: linebot.FlexContainerTypeBubble,
-		Body: templateBody,
+		Type:   linebot.FlexContainerTypeBubble,
+		Header: templateHeader,
+		Footer: templateBody,
+		Styles: blockStyle,
 	}
 
 	return linebot.NewFlexMessage("confirmation", confirmFlexTemplate)
-
-	// var template *linebot.ConfirmTemplate
-	// if strings.Contains(strings.Split(strings.Split(logics[i-1], "\n")[0], " ~ ")[1], "reminder") {
-	// 	template = linebot.NewConfirmTemplate(
-	// 		confirmationText,
-	// 		linebot.NewPostbackTemplateAction(confirmText[0], onSave, confirmText[0]+" ~ "+logics[i-1], ""),
-	// 		linebot.NewMessageTemplateAction(confirmText[1], confirmText[1]+" ~ "+logics[i-1]),
-	// 	)
-	// } else {
-	// 	template = linebot.NewConfirmTemplate(
-	// 		confirmationText,
-	// 		linebot.NewMessageTemplateAction(confirmText[0], confirmText[0]+" ~ "+logics[i-1]),
-	// 		linebot.NewMessageTemplateAction(confirmText[1], confirmText[1]+" ~ "+logics[i-1]),
-	// 	)
-	// }
 }
 
 func LineFlexCarousel(curText string) *linebot.FlexMessage {
