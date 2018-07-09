@@ -71,7 +71,7 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 				Styles: blockStyle,
 			}
 			carouselButtonComponent = append(carouselButtonComponent, buttonFlexTemplate)
-			buttonCarousel = buttonCarousel[:0]
+			// buttonCarousel = buttonCarousel[:0]
 		}
 	}
 	carouselButtonFlexTemplate := &linebot.CarouselContainer{
