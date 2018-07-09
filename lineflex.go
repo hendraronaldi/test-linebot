@@ -34,7 +34,7 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 	}
 
 	var buttonCarousel []linebot.FlexComponent
-	for index := 0; index < len(buttonText); index++ {
+	for index := range buttonText {
 		element := buttonText[index]
 		var text string
 		if strings.Contains(element, ":") {
