@@ -9,6 +9,7 @@ import (
 func LineFlexButton(curText string) *linebot.FlexMessage {
 	var element []string
 	var buttonText []string
+	var carouselButtonComponent []*linebot.BubbleContainer
 	title := " "
 	curText = curText[7 : len(curText)-1]
 	if strings.Contains(curText, ";") {
@@ -48,29 +49,36 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 			Action: linebot.NewMessageTemplateAction(text, element),
 		}
 		buttonCarousel = append(buttonCarousel, buttonColumn)
+		if index%4 == 0 || index == len(buttonText)-1 {
+			buttonTemplate := &linebot.BoxComponent{
+				Type:     linebot.FlexComponentTypeBox,
+				Layout:   linebot.FlexBoxLayoutTypeVertical,
+				Contents: buttonCarousel,
+			}
+			blockStyle := &linebot.BubbleStyle{
+				Header: &linebot.BlockStyle{
+					BackgroundColor: "#e5e5e5",
+				},
+				Footer: &linebot.BlockStyle{
+					Separator: true,
+				},
+			}
+			buttonFlexTemplate := &linebot.BubbleContainer{
+				Type:   linebot.FlexContainerTypeBubble,
+				Header: templateHeader,
+				Footer: buttonTemplate,
+				Styles: blockStyle,
+			}
+			carouselButtonComponent = append(carouselButtonComponent, buttonFlexTemplate)
+			buttonCarousel = buttonCarousel[:0]
+		}
 	}
-	buttonTemplate := &linebot.BoxComponent{
-		Type:     linebot.FlexComponentTypeBox,
-		Layout:   linebot.FlexBoxLayoutTypeVertical,
-		Contents: buttonCarousel,
-	}
-	blockStyle := &linebot.BubbleStyle{
-		Header: &linebot.BlockStyle{
-			BackgroundColor: "#e5e5e5",
-		},
-		Footer: &linebot.BlockStyle{
-			Separator: true,
-		},
+	carouselButtonFlexTemplate := &linebot.CarouselContainer{
+		Type:     linebot.FlexContainerTypeCarousel,
+		Contents: carouselButtonComponent,
 	}
 
-	buttonFlexTemplate := &linebot.BubbleContainer{
-		Type:   linebot.FlexContainerTypeBubble,
-		Header: templateHeader,
-		Footer: buttonTemplate,
-		Styles: blockStyle,
-	}
-
-	return linebot.NewFlexMessage("buttons", buttonFlexTemplate)
+	return linebot.NewFlexMessage("buttons", carouselButtonFlexTemplate)
 }
 
 func LineFlexConfirm(curText string) *linebot.FlexMessage {
