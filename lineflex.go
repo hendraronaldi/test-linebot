@@ -218,6 +218,7 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 					Action: buttonAction,
 					Style:  linebot.FlexButtonStyleTypeLink,
 					Margin: linebot.FlexComponentMarginTypeXs,
+					Height: linebot.FlexButtonHeightTypeSm,
 				}
 				lineFooterComponent = append(lineFooterComponent, footerButton)
 			}
