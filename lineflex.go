@@ -70,6 +70,8 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 				start = index - index%4
 				end = len(buttonText)
 			}
+			fmt.Println("start", start)
+			fmt.Println("end", end)
 			buttonTemplate = &linebot.BoxComponent{
 				Type:     linebot.FlexComponentTypeBox,
 				Layout:   linebot.FlexBoxLayoutTypeVertical,
