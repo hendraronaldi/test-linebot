@@ -53,7 +53,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				reply = append(reply, LineFlexConfirm(confirm))
 
 				//Button
-				button := "Button{Test;a|b|c|d}"
+				button := "Button{Test;a}"
 				reply = append(reply, LineFlexButton(button))
 
 				if _, err = bot.ReplyMessage(

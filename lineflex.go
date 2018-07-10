@@ -60,7 +60,7 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 				end = index
 			} else {
 				start = index - index%4
-				end = len(buttonCarousel)
+				end = len(buttonText)
 			}
 			buttonTemplate = &linebot.BoxComponent{
 				Type:     linebot.FlexComponentTypeBox,
