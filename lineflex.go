@@ -16,9 +16,17 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 	if strings.Contains(curText, ";") {
 		element = strings.Split(curText, ";")
 		title = element[0]
-		buttonText = strings.Split(element[1], "|")
+		if strings.Contains(element[1], "|") {
+			buttonText = strings.Split(element[1], "|")
+		} else {
+			buttonText = append(buttonText, element[1])
+		}
 	} else {
-		buttonText = strings.Split(curText, "|")
+		if strings.Contains(curText, "|") {
+			buttonText = strings.Split(curText, "|")
+		} else {
+			buttonText = append(buttonText, curText)
+		}
 	}
 	var templateHeaderComponent []linebot.FlexComponent
 	headerTextComponent := &linebot.TextComponent{
