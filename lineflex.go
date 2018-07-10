@@ -63,7 +63,7 @@ func LineFlexButton(curText string) *linebot.FlexMessage {
 			var buttonTemplate *linebot.BoxComponent
 			var start int
 			var end int
-			if index%4 == 0 {
+			if index > 0 && index%4 == 0 {
 				start = index - 4
 				end = index
 			} else {
