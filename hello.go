@@ -41,7 +41,7 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 			case *linebot.TextMessage:
 				var reply []linebot.Message
 				// form
-				form := "FlexForm{form ~ order\n______\nNama (sesuai line):Tolongin\nTempat Pemesanan atau Pengambilan Barang (patokan):KFC pasirkaliki\nAlamat Yang Dituju (patokan):Jl Dago Asri, Bandung\nNo Telepon (wajib diisi):081122334455\nCatatan:cepetan yah`Confirm{Yes|No}}"
+				form := "FlexForm{form ~ order\n______\nNama (sesuai line):Tolongin\nBeliin\nTempat Pemesanan atau Pengambilan Barang (patokan):KFC pasirkaliki\nAlamat Yang Dituju (patokan):Jl Dago Asri\nBandung\nNo Telepon (wajib diisi):081122334455\nCatatan:cepetan yah`Confirm{Yes|No}}"
 				reply = append(reply, LineFlexForm(form))
 
 				//Carousel
