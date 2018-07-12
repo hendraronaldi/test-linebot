@@ -240,9 +240,11 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 				}
 				description = element[2]
 				descriptionComponent := &linebot.TextComponent{
-					Type: linebot.FlexComponentTypeText,
-					Text: description,
-					Wrap: true,
+					Type:  linebot.FlexComponentTypeText,
+					Text:  description,
+					Wrap:  true,
+					Size:  linebot.FlexTextSizeTypeSm,
+					Color: "#e2e2e2",
 				}
 				lineFlexBodyComponent = append(lineFlexBodyComponent, titleComponent, descriptionComponent)
 				lineFlexBody = &linebot.BoxComponent{
