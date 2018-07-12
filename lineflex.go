@@ -344,7 +344,7 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 		Text:    formType,
 		Size:    linebot.FlexTextSizeTypeXl,
 		Weight:  linebot.FlexTextWeightTypeBold,
-		Margin:  linebot.FlexComponentMarginTypeMd,
+		Margin:  linebot.FlexComponentMarginTypeXxl,
 		Gravity: linebot.FlexComponentGravityTypeCenter,
 	}
 	bodyComponent = append(bodyComponent, formTypeComponent)
@@ -363,13 +363,15 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 			headerLabel = &linebot.TextComponent{
 				Type:   linebot.FlexComponentTypeText,
 				Text:   label,
-				Size:   linebot.FlexTextSizeTypeXs,
+				Wrap:   true,
+				Size:   linebot.FlexTextSizeTypeXxs,
 				Weight: linebot.FlexTextWeightTypeBold,
 			}
 			headerValue = &linebot.TextComponent{
 				Type:   linebot.FlexComponentTypeText,
 				Text:   value,
-				Size:   linebot.FlexTextSizeTypeXs,
+				Wrap:   true,
+				Size:   linebot.FlexTextSizeTypeXxs,
 				Weight: linebot.FlexTextWeightTypeBold,
 			}
 			headerFieldComponent = append(headerFieldComponent, headerLabel, headerValue)
