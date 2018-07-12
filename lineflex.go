@@ -362,7 +362,7 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 				Type:   linebot.FlexComponentTypeText,
 				Text:   label,
 				Wrap:   true,
-				Size:   linebot.FlexTextSizeTypeXxs,
+				Size:   linebot.FlexTextSizeTypeXs,
 				Weight: linebot.FlexTextWeightTypeBold,
 			}
 			headerValue = &linebot.TextComponent{
@@ -388,18 +388,18 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 		} else {
 			//Body Component
 			bodyLabelComponent = &linebot.TextComponent{
-				Type:   linebot.FlexComponentTypeText,
-				Text:   label,
-				Weight: linebot.FlexTextWeightTypeBold,
-				Wrap:   true,
-				Size:   linebot.FlexTextSizeTypeXs,
+				Type: linebot.FlexComponentTypeText,
+				Text: label,
+				Wrap: true,
+				Size: linebot.FlexTextSizeTypeXs,
 			}
 			bodyValueComponent = &linebot.TextComponent{
-				Type:  linebot.FlexComponentTypeText,
-				Text:  value,
-				Wrap:  true,
-				Align: linebot.FlexComponentAlignTypeEnd,
-				Size:  linebot.FlexTextSizeTypeXs,
+				Type:   linebot.FlexComponentTypeText,
+				Text:   value,
+				Weight: linebot.FlexTextWeightTypeBold,
+				Wrap:   true,
+				Align:  linebot.FlexComponentAlignTypeEnd,
+				Size:   linebot.FlexTextSizeTypeXs,
 			}
 			bodyContentComponent = append(bodyContentComponent, bodyLabelComponent, bodyValueComponent)
 			bodyContentBox = &linebot.BoxComponent{
@@ -433,11 +433,11 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 		var color string
 		var style linebot.FlexButtonStyleType
 		if button == "Yes" {
-			color = "#6d6d6d"
+			color = "#2E874A"
 			style = linebot.FlexButtonStyleTypePrimary
 		} else {
-			color = "#e2e2e2"
-			style = linebot.FlexButtonStyleTypeSecondary
+			color = "#BA2424"
+			style = linebot.FlexButtonStyleTypePrimary
 		}
 		buttonFlex := &linebot.ButtonComponent{
 			Type:   linebot.FlexComponentTypeButton,
