@@ -365,6 +365,12 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 			Spacing:  linebot.FlexComponentSpacingTypeMd,
 		}
 		bodyComponent = append(bodyComponent, bodyContentBox)
+		if index < len(bodyLabel)-1 {
+			separator := &linebot.SeparatorComponent{
+				Type: linebot.FlexComponentTypeSeparator,
+			}
+			bodyComponent = append(bodyComponent, separator)
+		}
 	}
 	flexFormBody := &linebot.BoxComponent{
 		Type:     linebot.FlexComponentTypeBox,
@@ -385,7 +391,7 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 			color = "#6d6d6d"
 			style = linebot.FlexButtonStyleTypePrimary
 		} else {
-			color = "#ffffff"
+			color = "#e2e2e2"
 			style = linebot.FlexButtonStyleTypeSecondary
 		}
 		buttonFlex := &linebot.ButtonComponent{
