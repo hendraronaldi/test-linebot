@@ -333,7 +333,7 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 	}
 	spacer := &linebot.SpacerComponent{
 		Type: linebot.FlexComponentTypeSpacer,
-		Size: linebot.FlexSpacerSizeTypeMd,
+		Size: linebot.FlexSpacerSizeTypeLg,
 	}
 	formTypeFlexComponent = append(formTypeFlexComponent, formTypeComponent, spacer)
 	formTypeBox := &linebot.BoxComponent{
