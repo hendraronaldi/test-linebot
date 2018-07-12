@@ -304,7 +304,7 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 	formText := strings.Split(curText, "`")[0]
 	NumberUnderScore := strings.Count(formText, "_")
 	separator := "\n" + strings.Repeat("_", NumberUnderScore)
-	headerText := strings.Split(formText, separator)[0]
+	formTypeText := strings.Split(formText, separator)[0]
 	bodyText := strings.Split(formText, separator)[1]
 
 	//Header
@@ -322,16 +322,23 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 	var bodyLabelComponent *linebot.TextComponent
 	var bodyValueComponent *linebot.TextComponent
 
-	formType := strings.Title(strings.Split(headerText, " ~ ")[1])
+	var formTypeFlexComponent []linebot.FlexComponent
+	formType := strings.Title(strings.Split(formTypeText, " ~ ")[1])
 	formTypeComponent := &linebot.TextComponent{
 		Type:    linebot.FlexComponentTypeText,
 		Text:    formType,
 		Size:    linebot.FlexTextSizeTypeXl,
 		Weight:  linebot.FlexTextWeightTypeBold,
-		Margin:  linebot.FlexComponentMarginTypeXxl,
 		Gravity: linebot.FlexComponentGravityTypeCenter,
 	}
-	bodyComponent = append(bodyComponent, formTypeComponent)
+	formTypeFlexComponent = append(formTypeFlexComponent, formTypeComponent)
+	formTypeBox := &linebot.BoxComponent{
+		Type:     linebot.FlexComponentTypeBox,
+		Layout:   linebot.FlexBoxLayoutTypeVertical,
+		Margin:   linebot.FlexComponentMarginTypeLg,
+		Contents: formTypeFlexComponent,
+	}
+	bodyComponent = append(bodyComponent, formTypeBox)
 
 	for index := range bodyLabel {
 		var bodyContentComponent []linebot.FlexComponent
