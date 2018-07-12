@@ -342,7 +342,9 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 	var bodyValueComponent *linebot.TextComponent
 	for index := range bodyLabel {
 		label := strings.TrimSpace(bodyLabel[index])
+		fmt.Println("label", label)
 		value := strings.TrimSpace(bodyContent[index])
+		fmt.Println("value", value)
 		bodyLabelComponent = &linebot.TextComponent{
 			Type:   linebot.FlexComponentTypeText,
 			Text:   label,
