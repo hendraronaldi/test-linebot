@@ -308,22 +308,6 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 	bodyText := strings.Split(formText, separator)[1]
 
 	//Header
-	// formType := strings.Title(strings.Split(headerText, " ~ ")[1])
-	// var headerComponent []linebot.FlexComponent
-	// var header *linebot.TextComponent
-	// header = &linebot.TextComponent{
-	// 	Type:   linebot.FlexComponentTypeText,
-	// 	Text:   formType,
-	// 	Size:   linebot.FlexTextSizeTypeXl,
-	// 	Weight: linebot.FlexTextWeightTypeBold,
-	// }
-	// headerComponent = append(headerComponent, header)
-	// flexFormHeader := &linebot.BoxComponent{
-	// 	Type:     linebot.FlexComponentTypeBox,
-	// 	Layout:   linebot.FlexBoxLayoutTypeVertical,
-	// 	Contents: headerComponent,
-	// 	Margin:   linebot.FlexComponentMarginTypeSm,
-	// }
 	var flexFormHeader *linebot.BoxComponent
 
 	//Body
@@ -356,6 +340,7 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 		value := strings.TrimSpace(bodyContent[index])
 		fmt.Println("value", value)
 		if strings.Contains(strings.ToLower(label), "invoice") {
+			//Header Component
 			var headerFieldComponent []linebot.FlexComponent
 			var headerComponent []linebot.FlexComponent
 			var headerLabel *linebot.TextComponent
@@ -373,6 +358,7 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 				Wrap:   true,
 				Size:   linebot.FlexTextSizeTypeXxs,
 				Weight: linebot.FlexTextWeightTypeBold,
+				Align:  linebot.FlexComponentAlignTypeEnd,
 			}
 			headerFieldComponent = append(headerFieldComponent, headerLabel, headerValue)
 			formHeaderBox := &linebot.BoxComponent{
@@ -387,6 +373,7 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 				Contents: headerComponent,
 			}
 		} else {
+			//Body Component
 			bodyLabelComponent = &linebot.TextComponent{
 				Type:   linebot.FlexComponentTypeText,
 				Text:   label,
