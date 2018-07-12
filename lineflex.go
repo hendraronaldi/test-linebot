@@ -333,6 +333,7 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 	bodyLabel := re.FindAllString(bodyText, -1)
 	bodyContent := re.Split(bodyText, -1)
 	bodyContent = bodyContent[1:len(bodyContent)]
+	fmt.Println(bodyContent)
 
 	var bodyContentBox *linebot.BoxComponent
 	var bodyContentComponent []linebot.FlexComponent
