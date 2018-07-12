@@ -308,14 +308,13 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 	bodyText := strings.Split(formText, separator)[1]
 
 	//Header
-	formType := strings.Split(headerText, " ~ ")[1]
+	formType := strings.Title(strings.Split(headerText, " ~ ")[1])
 	var headerComponent []linebot.FlexComponent
 	var header *linebot.TextComponent
 	header = &linebot.TextComponent{
 		Type:   linebot.FlexComponentTypeText,
 		Text:   formType,
 		Size:   linebot.FlexTextSizeTypeXl,
-		Align:  linebot.FlexComponentAlignTypeCenter,
 		Weight: linebot.FlexTextWeightTypeBold,
 	}
 	headerComponent = append(headerComponent, header)
