@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/line/line-bot-sdk-go/linebot"
@@ -301,77 +302,147 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 func LineFlexForm(curText string) *linebot.FlexMessage {
 	curText = strings.Replace(strings.TrimSuffix(curText, "}"), "FlexForm{", "", -1)
 	formText := strings.Split(curText, "`")[0]
-	form := strings.Split(formText, "\n")
+	//
+	NumberUnderScore := strings.Count(formText, "_")
+	separator := "\n" + strings.Repeat("_", NumberUnderScore)
+	headerText := strings.Split(formText, separator)[0]
+	bodyText := strings.Split(formText, separator)[1]
+
+	formType := strings.Split(headerText, " ~ ")[1]
+	// result["formType"] = formType
+	var headerComponent []linebot.FlexComponent
+	var header *linebot.TextComponent
+	// titleElements := strings.Split(row, " ~ ")
+	// formTitle := strings.Title(titleElements[len(titleElements)-1])
+	header = &linebot.TextComponent{
+		Type:   linebot.FlexComponentTypeText,
+		Text:   formType,
+		Size:   linebot.FlexTextSizeTypeXl,
+		Align:  linebot.FlexComponentAlignTypeCenter,
+		Weight: linebot.FlexTextWeightTypeBold,
+	}
+	headerComponent = append(headerComponent, header)
+	flexFormHeader := &linebot.BoxComponent{
+		Type:     linebot.FlexComponentTypeBox,
+		Layout:   linebot.FlexBoxLayoutTypeVertical,
+		Contents: headerComponent,
+		Margin:   linebot.FlexComponentMarginTypeSm,
+	}
+
+	re := regexp.MustCompile(`\n.*:`)
+	bodyLabel := re.FindAllString(bodyText, -1)
+	bodyContent := re.Split(bodyText, -1)
+	bodyContent = bodyContent[1:len(bodyContent)]
+
+	var bodyContentBox *linebot.BoxComponent
+	var bodyContentComponent []linebot.FlexComponent
+	var bodyComponent []linebot.FlexComponent
+	for index := range bodyLabel {
+		label := strings.TrimSpace(bodyLabel[index])
+		value := strings.TrimSpace(bodyContent[index])
+		bodyLabel := &linebot.TextComponent{
+			Type:   linebot.FlexComponentTypeText,
+			Text:   label,
+			Weight: linebot.FlexTextWeightTypeBold,
+			Wrap:   true,
+			Size:   linebot.FlexTextSizeTypeXs,
+		}
+		// bodyContentComponent = append(bodyContentComponent, bodyLabelValue)
+		bodyValue := &linebot.TextComponent{
+			Type:  linebot.FlexComponentTypeText,
+			Text:  value,
+			Wrap:  true,
+			Align: linebot.FlexComponentAlignTypeEnd,
+			Size:  linebot.FlexTextSizeTypeXs,
+		}
+		bodyContentComponent = append(bodyContentComponent, bodyLabel, bodyValue)
+		bodyContentBox = &linebot.BoxComponent{
+			Type:     linebot.FlexComponentTypeBox,
+			Layout:   linebot.FlexBoxLayoutTypeHorizontal,
+			Contents: bodyContentComponent,
+			Spacing:  linebot.FlexComponentSpacingTypeMd,
+		}
+		bodyComponent = append(bodyComponent, bodyContentBox)
+	}
+	flexFormBody := &linebot.BoxComponent{
+		Type:     linebot.FlexComponentTypeBox,
+		Layout:   linebot.FlexBoxLayoutTypeVertical,
+		Contents: bodyComponent,
+		Spacing:  linebot.FlexComponentSpacingTypeSm,
+	}
+
+	//
+	// form := strings.Split(formText, "\n")
 	formFooter := strings.Split(curText, "`")[1]
 	formFooter = strings.Replace(strings.TrimSuffix(formFooter, "}"), "Confirm{", "", -1)
 	formFooterComponent := strings.Split(formFooter, "|")
-	var flexBubbleContainer *linebot.BubbleContainer
-	var flexFormHeader *linebot.BoxComponent
-	var flexFormBody *linebot.BoxComponent
-	var flexFormFooter *linebot.BoxComponent
-	var bodyComponent []linebot.FlexComponent
-	for index, row := range form {
-		if strings.Contains(row, "form ~ ") {
-			var headerComponent []linebot.FlexComponent
-			var header *linebot.TextComponent
-			titleElements := strings.Split(row, " ~ ")
-			formTitle := strings.Title(titleElements[len(titleElements)-1])
-			header = &linebot.TextComponent{
-				Type:   linebot.FlexComponentTypeText,
-				Text:   formTitle,
-				Size:   linebot.FlexTextSizeTypeXl,
-				Align:  linebot.FlexComponentAlignTypeCenter,
-				Weight: linebot.FlexTextWeightTypeBold,
-			}
-			headerComponent = append(headerComponent, header)
-			flexFormHeader = &linebot.BoxComponent{
-				Type:     linebot.FlexComponentTypeBox,
-				Layout:   linebot.FlexBoxLayoutTypeVertical,
-				Contents: headerComponent,
-				Margin:   linebot.FlexComponentMarginTypeSm,
-			}
-		} else if strings.Contains(row, ":") {
-			var bodyContent *linebot.BoxComponent
-			var bodyContentComponent []linebot.FlexComponent
+	// var flexBubbleContainer *linebot.BubbleContainer
+	// var flexFormHeader *linebot.BoxComponent
+	// var flexFormBody *linebot.BoxComponent
+	// var flexFormFooter *linebot.BoxComponent
+	// var bodyComponent []linebot.FlexComponent
+	// for index, row := range form {
+	// 	if strings.Contains(row, "form ~ ") {
+	// 		var headerComponent []linebot.FlexComponent
+	// 		var header *linebot.TextComponent
+	// 		titleElements := strings.Split(row, " ~ ")
+	// 		formTitle := strings.Title(titleElements[len(titleElements)-1])
+	// 		header = &linebot.TextComponent{
+	// 			Type:   linebot.FlexComponentTypeText,
+	// 			Text:   formTitle,
+	// 			Size:   linebot.FlexTextSizeTypeXl,
+	// 			Align:  linebot.FlexComponentAlignTypeCenter,
+	// 			Weight: linebot.FlexTextWeightTypeBold,
+	// 		}
+	// 		headerComponent = append(headerComponent, header)
+	// 		flexFormHeader = &linebot.BoxComponent{
+	// 			Type:     linebot.FlexComponentTypeBox,
+	// 			Layout:   linebot.FlexBoxLayoutTypeVertical,
+	// 			Contents: headerComponent,
+	// 			Margin:   linebot.FlexComponentMarginTypeSm,
+	// 		}
+	// 	} else if strings.Contains(row, ":") {
+	// 		var bodyContent *linebot.BoxComponent
+	// 		var bodyContentComponent []linebot.FlexComponent
 
-			formBodyContent := strings.Split(row, ":")
-			for index, text := range formBodyContent {
-				var bodyLabelValue *linebot.TextComponent
-				if index == 0 {
-					bodyLabelValue = &linebot.TextComponent{
-						Type:   linebot.FlexComponentTypeText,
-						Text:   text,
-						Weight: linebot.FlexTextWeightTypeBold,
-						Wrap:   true,
-						Size:   linebot.FlexTextSizeTypeXs,
-					}
-					bodyContentComponent = append(bodyContentComponent, bodyLabelValue)
-				} else {
-					bodyLabelValue = &linebot.TextComponent{
-						Type:  linebot.FlexComponentTypeText,
-						Text:  text,
-						Wrap:  true,
-						Align: linebot.FlexComponentAlignTypeEnd,
-						Size:  linebot.FlexTextSizeTypeXs,
-					}
-					bodyContentComponent = append(bodyContentComponent, bodyLabelValue)
-				}
-			}
-			bodyContent = &linebot.BoxComponent{
-				Type:     linebot.FlexComponentTypeBox,
-				Layout:   linebot.FlexBoxLayoutTypeHorizontal,
-				Contents: bodyContentComponent,
-				Spacing:  linebot.FlexComponentSpacingTypeMd,
-			}
-			bodyComponent = append(bodyComponent, bodyContent)
-			separator := &linebot.SeparatorComponent{
-				Type: linebot.FlexComponentTypeSeparator,
-			}
-			if index < len(form)-1 {
-				bodyComponent = append(bodyComponent, separator)
-			}
-		}
-	}
+	// 		formBodyContent := strings.Split(row, ":")
+	// 		for index, text := range formBodyContent {
+	// 			var bodyLabelValue *linebot.TextComponent
+	// 			if index == 0 {
+	// 				bodyLabelValue = &linebot.TextComponent{
+	// 					Type:   linebot.FlexComponentTypeText,
+	// 					Text:   text,
+	// 					Weight: linebot.FlexTextWeightTypeBold,
+	// 					Wrap:   true,
+	// 					Size:   linebot.FlexTextSizeTypeXs,
+	// 				}
+	// 				bodyContentComponent = append(bodyContentComponent, bodyLabelValue)
+	// 			} else {
+	// 				bodyLabelValue = &linebot.TextComponent{
+	// 					Type:  linebot.FlexComponentTypeText,
+	// 					Text:  text,
+	// 					Wrap:  true,
+	// 					Align: linebot.FlexComponentAlignTypeEnd,
+	// 					Size:  linebot.FlexTextSizeTypeXs,
+	// 				}
+	// 				bodyContentComponent = append(bodyContentComponent, bodyLabelValue)
+	// 			}
+	// 		}
+	// 		bodyContent = &linebot.BoxComponent{
+	// 			Type:     linebot.FlexComponentTypeBox,
+	// 			Layout:   linebot.FlexBoxLayoutTypeHorizontal,
+	// 			Contents: bodyContentComponent,
+	// 			Spacing:  linebot.FlexComponentSpacingTypeMd,
+	// 		}
+	// 		bodyComponent = append(bodyComponent, bodyContent)
+	// 		separator := &linebot.SeparatorComponent{
+	// 			Type: linebot.FlexComponentTypeSeparator,
+	// 		}
+	// 		if index < len(form)-1 {
+	// 			bodyComponent = append(bodyComponent, separator)
+	// 		}
+	// 	}
+	// }
 
 	var footerComponent []linebot.FlexComponent
 	for _, button := range formFooterComponent {
@@ -391,18 +462,18 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 		footerComponent = append(footerComponent, buttonFlex)
 	}
 
-	flexFormFooter = &linebot.BoxComponent{
+	flexFormFooter := &linebot.BoxComponent{
 		Type:     linebot.FlexComponentTypeBox,
 		Layout:   linebot.FlexBoxLayoutTypeHorizontal,
 		Spacing:  linebot.FlexComponentSpacingTypeSm,
 		Contents: footerComponent,
 	}
-	flexFormBody = &linebot.BoxComponent{
-		Type:     linebot.FlexComponentTypeBox,
-		Layout:   linebot.FlexBoxLayoutTypeVertical,
-		Contents: bodyComponent,
-		Spacing:  linebot.FlexComponentSpacingTypeSm,
-	}
+	// flexFormBody = &linebot.BoxComponent{
+	// 	Type:     linebot.FlexComponentTypeBox,
+	// 	Layout:   linebot.FlexBoxLayoutTypeVertical,
+	// 	Contents: bodyComponent,
+	// 	Spacing:  linebot.FlexComponentSpacingTypeSm,
+	// }
 
 	blockStyle := &linebot.BubbleStyle{
 		Body: &linebot.BlockStyle{
@@ -413,7 +484,7 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 		},
 	}
 
-	flexBubbleContainer = &linebot.BubbleContainer{
+	flexBubbleContainer := &linebot.BubbleContainer{
 		Type:   linebot.FlexContainerTypeBubble,
 		Header: flexFormHeader,
 		Body:   flexFormBody,
