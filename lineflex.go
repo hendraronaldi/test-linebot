@@ -308,22 +308,23 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 	bodyText := strings.Split(formText, separator)[1]
 
 	//Header
-	formType := strings.Title(strings.Split(headerText, " ~ ")[1])
-	var headerComponent []linebot.FlexComponent
-	var header *linebot.TextComponent
-	header = &linebot.TextComponent{
-		Type:   linebot.FlexComponentTypeText,
-		Text:   formType,
-		Size:   linebot.FlexTextSizeTypeXl,
-		Weight: linebot.FlexTextWeightTypeBold,
-	}
-	headerComponent = append(headerComponent, header)
-	flexFormHeader := &linebot.BoxComponent{
-		Type:     linebot.FlexComponentTypeBox,
-		Layout:   linebot.FlexBoxLayoutTypeVertical,
-		Contents: headerComponent,
-		Margin:   linebot.FlexComponentMarginTypeSm,
-	}
+	// formType := strings.Title(strings.Split(headerText, " ~ ")[1])
+	// var headerComponent []linebot.FlexComponent
+	// var header *linebot.TextComponent
+	// header = &linebot.TextComponent{
+	// 	Type:   linebot.FlexComponentTypeText,
+	// 	Text:   formType,
+	// 	Size:   linebot.FlexTextSizeTypeXl,
+	// 	Weight: linebot.FlexTextWeightTypeBold,
+	// }
+	// headerComponent = append(headerComponent, header)
+	// flexFormHeader := &linebot.BoxComponent{
+	// 	Type:     linebot.FlexComponentTypeBox,
+	// 	Layout:   linebot.FlexBoxLayoutTypeVertical,
+	// 	Contents: headerComponent,
+	// 	Margin:   linebot.FlexComponentMarginTypeSm,
+	// }
+	var flexFormHeader *linebot.BoxComponent
 
 	//Body
 	re := regexp.MustCompile(`\n.*:`)
@@ -336,39 +337,82 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 	var bodyComponent []linebot.FlexComponent
 	var bodyLabelComponent *linebot.TextComponent
 	var bodyValueComponent *linebot.TextComponent
+
+	formType := strings.Title(strings.Split(headerText, " ~ ")[1])
+	formTypeComponent := &linebot.TextComponent{
+		Type:    linebot.FlexComponentTypeText,
+		Text:    formType,
+		Size:    linebot.FlexTextSizeTypeXl,
+		Weight:  linebot.FlexTextWeightTypeBold,
+		Margin:  linebot.FlexComponentMarginTypeMd,
+		Gravity: linebot.FlexComponentGravityTypeCenter,
+	}
+	bodyComponent = append(bodyComponent, formTypeComponent)
+
 	for index := range bodyLabel {
 		var bodyContentComponent []linebot.FlexComponent
 		label := strings.TrimSuffix(strings.TrimSpace(bodyLabel[index]), ":")
 		fmt.Println("label", label)
 		value := strings.TrimSpace(bodyContent[index])
 		fmt.Println("value", value)
-		bodyLabelComponent = &linebot.TextComponent{
-			Type:   linebot.FlexComponentTypeText,
-			Text:   label,
-			Weight: linebot.FlexTextWeightTypeBold,
-			Wrap:   true,
-			Size:   linebot.FlexTextSizeTypeXs,
-		}
-		bodyValueComponent = &linebot.TextComponent{
-			Type:  linebot.FlexComponentTypeText,
-			Text:  value,
-			Wrap:  true,
-			Align: linebot.FlexComponentAlignTypeEnd,
-			Size:  linebot.FlexTextSizeTypeXs,
-		}
-		bodyContentComponent = append(bodyContentComponent, bodyLabelComponent, bodyValueComponent)
-		bodyContentBox = &linebot.BoxComponent{
-			Type:     linebot.FlexComponentTypeBox,
-			Layout:   linebot.FlexBoxLayoutTypeHorizontal,
-			Contents: bodyContentComponent,
-			Spacing:  linebot.FlexComponentSpacingTypeMd,
-		}
-		bodyComponent = append(bodyComponent, bodyContentBox)
-		if index < len(bodyLabel)-1 {
-			separator := &linebot.SeparatorComponent{
-				Type: linebot.FlexComponentTypeSeparator,
+		if strings.Contains(strings.ToLower(label), "invoice") {
+			var headerFieldComponent []linebot.FlexComponent
+			var headerComponent []linebot.FlexComponent
+			var headerLabel *linebot.TextComponent
+			var headerValue *linebot.TextComponent
+			headerLabel = &linebot.TextComponent{
+				Type:   linebot.FlexComponentTypeText,
+				Text:   label,
+				Size:   linebot.FlexTextSizeTypeXs,
+				Weight: linebot.FlexTextWeightTypeBold,
 			}
-			bodyComponent = append(bodyComponent, separator)
+			headerValue = &linebot.TextComponent{
+				Type:   linebot.FlexComponentTypeText,
+				Text:   value,
+				Size:   linebot.FlexTextSizeTypeXs,
+				Weight: linebot.FlexTextWeightTypeBold,
+			}
+			headerFieldComponent = append(headerFieldComponent, headerLabel, headerValue)
+			formHeaderBox := &linebot.BoxComponent{
+				Type:     linebot.FlexComponentTypeBox,
+				Layout:   linebot.FlexBoxLayoutTypeHorizontal,
+				Contents: headerFieldComponent,
+			}
+			headerComponent = append(headerComponent, formHeaderBox)
+			flexFormHeader = &linebot.BoxComponent{
+				Type:     linebot.FlexComponentTypeBox,
+				Layout:   linebot.FlexBoxLayoutTypeVertical,
+				Contents: headerComponent,
+			}
+		} else {
+			bodyLabelComponent = &linebot.TextComponent{
+				Type:   linebot.FlexComponentTypeText,
+				Text:   label,
+				Weight: linebot.FlexTextWeightTypeBold,
+				Wrap:   true,
+				Size:   linebot.FlexTextSizeTypeXs,
+			}
+			bodyValueComponent = &linebot.TextComponent{
+				Type:  linebot.FlexComponentTypeText,
+				Text:  value,
+				Wrap:  true,
+				Align: linebot.FlexComponentAlignTypeEnd,
+				Size:  linebot.FlexTextSizeTypeXs,
+			}
+			bodyContentComponent = append(bodyContentComponent, bodyLabelComponent, bodyValueComponent)
+			bodyContentBox = &linebot.BoxComponent{
+				Type:     linebot.FlexComponentTypeBox,
+				Layout:   linebot.FlexBoxLayoutTypeHorizontal,
+				Contents: bodyContentComponent,
+				Spacing:  linebot.FlexComponentSpacingTypeMd,
+			}
+			bodyComponent = append(bodyComponent, bodyContentBox)
+			if index < len(bodyLabel)-1 {
+				separator := &linebot.SeparatorComponent{
+					Type: linebot.FlexComponentTypeSeparator,
+				}
+				bodyComponent = append(bodyComponent, separator)
+			}
 		}
 	}
 	flexFormBody := &linebot.BoxComponent{
