@@ -331,7 +331,10 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 		Weight:  linebot.FlexTextWeightTypeBold,
 		Gravity: linebot.FlexComponentGravityTypeCenter,
 	}
-	formTypeFlexComponent = append(formTypeFlexComponent, formTypeComponent)
+	spacer := &linebot.SpacerComponent{
+		Type: linebot.FlexComponentTypeSpacer,
+	}
+	formTypeFlexComponent = append(formTypeFlexComponent, formTypeComponent, spacer)
 	formTypeBox := &linebot.BoxComponent{
 		Type:     linebot.FlexComponentTypeBox,
 		Layout:   linebot.FlexBoxLayoutTypeVertical,
