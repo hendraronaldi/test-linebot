@@ -244,7 +244,7 @@ func LineFlexCarousel(curText string) *linebot.FlexMessage {
 					Text:  description,
 					Wrap:  true,
 					Size:  linebot.FlexTextSizeTypeSm,
-					Color: "#e2e2e2",
+					Color: "#b5b5b5",
 				}
 				lineFlexBodyComponent = append(lineFlexBodyComponent, titleComponent, descriptionComponent)
 				lineFlexBody = &linebot.BoxComponent{
@@ -335,13 +335,13 @@ func LineFlexForm(curText string) *linebot.FlexMessage {
 	}
 	spacer := &linebot.SpacerComponent{
 		Type: linebot.FlexComponentTypeSpacer,
-		Size: linebot.FlexSpacerSizeTypeLg,
+		Size: linebot.FlexSpacerSizeTypeXl,
 	}
 	formTypeFlexComponent = append(formTypeFlexComponent, formTypeComponent, spacer)
 	formTypeBox := &linebot.BoxComponent{
 		Type:     linebot.FlexComponentTypeBox,
 		Layout:   linebot.FlexBoxLayoutTypeVertical,
-		Margin:   linebot.FlexComponentMarginTypeLg,
+		Margin:   linebot.FlexComponentMarginTypeXl,
 		Contents: formTypeFlexComponent,
 	}
 	bodyComponent = append(bodyComponent, formTypeBox)
